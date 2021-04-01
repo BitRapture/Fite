@@ -1,8 +1,13 @@
-#include <SDL.h>
+#include "GameManager.h"
 
 int main(int argc, char** argv)
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0 ) return 1;
+
+	GameManager Game;
+
+
 
 	SDL_Quit();
+	return 0;
 }

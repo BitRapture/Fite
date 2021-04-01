@@ -11,7 +11,7 @@ protected:
 // Pure virtual methods
 public:
 	// Update method
-	void virtual Update() = 0;
+	void virtual Update(double& _deltaTime) = 0;
 	// Render method
 	void virtual Render() = 0;
 

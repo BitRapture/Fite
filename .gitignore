@@ -1,0 +1,7 @@
+Debug/
+Release/
+TopdownBeatemup.sln
+TopdownBeatemup/TopdownBeatemup.vcxproj
+TopdownBeatemup/TopdownBeatemup.vcxproj.filters
+TopdownBeatemup/TopdownBeatemup.vcxproj.user
+.vs

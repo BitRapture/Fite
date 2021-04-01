@@ -2,6 +2,7 @@
 #define _GAMEMANAGER_H_
 
 #include <SDL.h>
+#include "EventManager.h"
 
 class GameManager
 {
@@ -9,6 +10,8 @@ class GameManager
 private:
 	// Initialisation flag
 	bool mInitialised{ false };
+	// Main gameloop flag
+	bool mGameLoop{ false };
 
 // SDL2 variables
 private:
@@ -16,6 +19,9 @@ private:
 	SDL_Renderer* mContext{ nullptr };
 
 public:
+	// Run the game
+	void Run();
+
 	// Constructor
 	GameManager();
 	// Destructor

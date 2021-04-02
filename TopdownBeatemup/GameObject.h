@@ -6,8 +6,11 @@
 
 class GameObject : public Entity
 {
-// Hideen variables
+// Hidden variables
 private:
+// Sprite variables
+	// GameObject spritesheet 
+	SDL_Texture* mSprite{ nullptr };
 	// Current sprite time
 	float mSpriteTime{ 0 };
 	// Size of the sprite
@@ -20,12 +23,12 @@ private:
 // Shared variables
 protected:
 // Sprite variables
-	// GameObject spritesheet 
-	SDL_Texture* mSprite{ nullptr };
 	// Sprite angle (degrees)
 	float mSpriteAngle{ 0 };
 	// Sprite speed (miliseconds)
 	float mSpriteSpeed{ 0 };
+	// Sprite image offset from mX & mY
+	float mSpriteXOffset{ 0 }, mSpriteYOffset{ 0 };
 
 // Generic GameObject variables
 	// GameObject size (circle radius)
@@ -34,7 +37,7 @@ protected:
 	float mDirection{ 0 };
 
 // SDL variables
-	// Pointer to the main renderer
+	// Pointer to main renderer
 	SDL_Renderer* mContext{ nullptr };
 
 // Shared methods
@@ -45,6 +48,8 @@ protected:
 	void AnimateSprite(double& _deltaTime);
 	// Basic rendering of sprite
 	void RenderSprite();
+	// Reset the sprite time
+	void ResetSpriteTime();
 	// Set sprite frame index
 	bool SetSpriteIndex(int _x, int _y = 0);
 
@@ -54,10 +59,12 @@ public:
 	int GetSpriteXIndex();
 	// Get sprite frame y-index
 	int GetSpriteYIndex();
+	// Circle-Circle collision
+	bool CheckCollision(GameObject& _object);
 
 public:
 	// Constructor
-	GameObject(SDL_Renderer* _ctx, SDL_Texture* _sprite, SDL_Rect _spriteSize, int _maxXFrames, int _maxYFrames);
+	GameObject(SDL_Renderer* _ctx, SDL_Texture* _sprite, SDL_Rect _spriteSize, int _maxXFrames, int _maxYFrames, float _objectSize);
 	// Destructor
 	~GameObject();
 

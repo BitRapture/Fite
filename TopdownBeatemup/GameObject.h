@@ -59,8 +59,12 @@ public:
 	int GetSpriteXIndex();
 	// Get sprite frame y-index
 	int GetSpriteYIndex();
-	// Circle-Circle collision
+	// Get sprite size
+	SDL_Rect GetSpriteSize();
+	// Circle-Circle collision (main form of object collision)
 	bool CheckCollision(GameObject& _object);
+	// AABB collision, based off sprite size
+	bool CheckAABBCollision(GameObject& _object);
 
 public:
 	// Constructor

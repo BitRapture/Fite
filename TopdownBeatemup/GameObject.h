@@ -74,4 +74,10 @@ public:
 
 };
 
+
+// todo:
+// Add camera pointer
+//		-> Create camera class
+// Let mX mY get offset by camera pos
+
 #endif

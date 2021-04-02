@@ -2,9 +2,7 @@
 
 void Player::Update(double& _deltaTime)
 {
-	mSpriteAngle++;
-	mX = 128;
-	mY = 128;
+	AnimateSprite(_deltaTime);
 }
 
 void Player::Render()
@@ -14,9 +12,12 @@ void Player::Render()
 
 Player::Player(SDL_Renderer* _ctx, SDL_Texture* _playerSprite)
 :
-	Character(_ctx, _playerSprite, {0, 0, 64, 64}, 1, 0, 32)
+	Character(_ctx, _playerSprite, {0, 0, 64, 64}, 3, 0, 32)
 {
-
+	mSpriteSpeed = 50.f;
+	mSpriteAngle = 90.f;
+	mSpriteXOffset = 100;
+	mSpriteYOffset = 70;
 }
 
 Player::~Player()

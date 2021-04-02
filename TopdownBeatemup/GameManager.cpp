@@ -4,7 +4,7 @@ void GameManager::Run()
 {
 	mGameLoop = mInitialised;
 
-	double tempTime = 0;
+	double tempTime = 0.1;
 
 	SDL_Surface* rawSheet = IMG_Load("FiteCharacter.png");
 	SDL_Texture* spriteSheet = SDL_CreateTextureFromSurface(mContext, rawSheet);

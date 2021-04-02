@@ -1,7 +1,7 @@
 #ifndef _GAMEOBJECT_H_
 #define _GAMEOBJECT_H_
 
-#include <SDL_image.h>
+#include <SDL.h>
 #include "Entity.h"
 
 class GameObject : public Entity
@@ -67,8 +67,8 @@ public:
 	bool CheckAABBCollision(GameObject& _object);
 
 public:
-	// Constructor
-	GameObject(SDL_Renderer* _ctx, SDL_Texture* _sprite, SDL_Rect _spriteSize, int _maxXFrames, int _maxYFrames, float _objectSize);
+	// Constructors
+	GameObject(SDL_Renderer* _ctx, SDL_Texture* _sprite, SDL_Rect& _spriteSize, int& _maxXFrames, int& _maxYFrames, float& _objectSize);
 	// Destructor
 	~GameObject();
 

@@ -73,7 +73,7 @@ bool GameObject::CheckAABBCollision(GameObject& _object)
 		);
 }
 
-GameObject::GameObject(SDL_Renderer* _ctx, SDL_Texture* _sprite, SDL_Rect _spriteSize, int _maxXFrames, int _maxYFrames, float _objectSize)
+GameObject::GameObject(SDL_Renderer* _ctx, SDL_Texture* _sprite, SDL_Rect& _spriteSize, int& _maxXFrames, int& _maxYFrames, float& _objectSize)
 :
 	mContext{ _ctx }, mSprite{ _sprite }, mSpriteSize{ _spriteSize },
 	mSpriteIXM{ _maxXFrames }, mSpriteIYM{ _maxYFrames },

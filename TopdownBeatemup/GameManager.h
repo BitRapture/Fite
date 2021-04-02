@@ -2,7 +2,10 @@
 #define _GAMEMANAGER_H_
 
 #include <SDL.h>
+#include <SDL_image.h>
+
 #include "EventManager.h"
+#include "Player.h"
 
 class GameManager
 {

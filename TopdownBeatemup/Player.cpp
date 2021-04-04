@@ -23,8 +23,8 @@ Player::Player(SDL_Renderer* _ctx, SDL_Texture* _playerSprite, EventManager* _ev
 	mSpriteSpeed = 20.f;
 	mSpriteXOffset = -32;
 	mSpriteYOffset = -32;
-	mX = 64;
-	mY = 64;
+	mX = 32;
+	mY = 32;
 }
 
 Player::~Player()

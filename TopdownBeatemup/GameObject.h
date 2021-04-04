@@ -33,8 +33,9 @@ protected:
 // Generic GameObject variables
 	// GameObject size (circle radius)
 	float mSize{ 0 };
-	// GameObject direction (unit vector)
-	float mDirX{ 0 }, mDirY{ 0 };
+	// GameObject direction (unit vector) 
+	// (pointing right by default)
+	float mDirX{ 1 }, mDirY{ 0 };
 
 // SDL variables
 	// Pointer to main renderer
@@ -52,6 +53,11 @@ protected:
 	void ResetSpriteTime();
 	// Set sprite frame index
 	bool SetSpriteIndex(int _x, int _y = 0);
+	// Set direction (radians)
+	void SetDirection(float _angle);
+	// Set cardinal direction (0 to 7) (clockwise)
+	// Precalculated unit vector directions
+	void SetCardinalDir(int _dir);
 
 // Public methods
 public:

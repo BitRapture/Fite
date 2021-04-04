@@ -40,6 +40,36 @@ bool GameObject::SetSpriteIndex(int _x, int _y)
 	return true;
 }
 
+void GameObject::SetDirection(float _angle)
+{
+	float cos = cosf(_angle), sin = sinf(_angle), tempX = mDirX;
+	mDirX = (mDirX * cos) - (mDirY * sin);
+	mDirY = (tempX * sin) + (mDirY * cos);
+}
+
+void GameObject::SetCardinalDir(int _dir)
+{
+	switch (_dir)
+	{
+	// Facing up
+	case 0: { mDirX = 0; mDirY = -1; break; }
+	// Facing up-right
+	case 1: { mDirX = 0.7071067811865476f; mDirY = -0.707106781186547f; break; }
+	// Facing right
+	case 2: { mDirX = 1; mDirY = 0; break; }
+	// Facing down-right
+	case 3: { mDirX = 0.7071067811865475f; mDirY = 0.707106781186547f; break; }
+	// Facing down
+	case 4: { mDirX = 0; mDirY = 1; break; }
+	// Facing down-left
+	case 5: { mDirX = -0.7071067811865477f; mDirY = 0.7071067811865475f; break; }
+	// Facing left
+	case 6: { mDirX = -1; mDirY = 0; break; }
+	// Facing up-left
+	case 7: { mDirX = -0.7071067811865474f; mDirY = -0.7071067811865477f; break; }
+	}
+}
+
 int GameObject::GetSpriteXIndex()
 {
 	return mSpriteIX;

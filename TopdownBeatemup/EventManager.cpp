@@ -58,3 +58,7 @@ int EventManager::GetDeltaY()
 {
 	return mDeltaY;
 }
+
+// To-do
+// Add keybind support
+//	-> Maybe after assignment

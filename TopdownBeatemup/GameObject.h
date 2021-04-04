@@ -33,8 +33,8 @@ protected:
 // Generic GameObject variables
 	// GameObject size (circle radius)
 	float mSize{ 0 };
-	// GameObject direction (degrees)
-	float mDirection{ 0 };
+	// GameObject direction (unit vector)
+	float mDirX{ 0 }, mDirY{ 0 };
 
 // SDL variables
 	// Pointer to main renderer

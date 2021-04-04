@@ -2,8 +2,8 @@
 
 void Player::Update(double& _deltaTime)
 {
-	mX += mEvents->GetDeltaX() * 0.2f;
-	mY += mEvents->GetDeltaY() * 0.2f;
+	mX += mEvents->GetDeltaX() * 0.2f * (float)_deltaTime;
+	mY += mEvents->GetDeltaY() * 0.2f * (float)_deltaTime;
 
 	float rad = atan2f(mY - mEvents->GetMouseY(), mX - mEvents->GetMouseX());
 

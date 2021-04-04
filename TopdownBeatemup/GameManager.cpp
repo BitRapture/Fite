@@ -2,9 +2,15 @@
 
 void GameManager::Run()
 {
+	// Check SDL has initialised everything
 	mGameLoop = mInitialised;
 
-	double tempTime = 0.1;
+	// Declare and init time variables
+	Uint64 timeCurrent = 0, timeLast = SDL_GetPerformanceCounter();
+	// Delta time for object movement
+	double deltaTime = 0;
+	// Counter frequency
+	double counterFreq = 1000.0 / SDL_GetPerformanceFrequency();
 
 	SDL_Surface* rawSheet = IMG_Load("Media/FiteCharacter.png");
 	SDL_Texture* spriteSheet = SDL_CreateTextureFromSurface(mContext, rawSheet);
@@ -13,14 +19,25 @@ void GameManager::Run()
 
 	while (mGameLoop)
 	{
+		// Poll all events (keyboard, window, mouse, etc)
 		mGameLoop = !mEvents.Poll();
 
+		// Calculate deltaTime (miliseconds)
+		timeCurrent = SDL_GetPerformanceCounter();
+		deltaTime = (timeCurrent - timeLast) * counterFreq;
+		timeLast = timeCurrent;
+
+		// Update methods
+		mPlayer.Update(deltaTime);
+
+		// Render methods
 		SDL_RenderClear(mContext);
 
-		mPlayer.Update(tempTime);
 		mPlayer.Render();
 
 		SDL_RenderPresent(mContext);
+
+		SDL_Log("dT: %f", deltaTime);
 	}
 
 	SDL_DestroyTexture(spriteSheet);

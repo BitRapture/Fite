@@ -2,7 +2,7 @@
 
 void GameObject::RenderSegment(SDL_Rect& _segment)
 {
-	SDL_Rect dest{ mX + mSpriteXOffset, mY + mSpriteYOffset, _segment.w, _segment.h };
+	SDL_Rect dest{ (int)(mX + mSpriteXOffset), (int)(mY + mSpriteYOffset), _segment.w, _segment.h };
 	SDL_RenderCopyEx(mContext, mSprite, &_segment, &dest, mSpriteAngle, NULL, SDL_FLIP_NONE);
 }
 
@@ -57,13 +57,13 @@ SDL_Rect GameObject::GetSpriteSize()
 
 bool GameObject::CheckCollision(GameObject& _object)
 {
-	return ((powf(mX - _object.mX, 2) + powf(mY - _object.mY, 2)) <= powf(mSize - _object.mSize, 2));
+	return ((powf(mX - _object.mX, 2) + powf(mY - _object.mY, 2)) <= powf(mSize + _object.mSize, 2));
 }
 
 bool GameObject::CheckAABBCollision(GameObject& _object)
 {
 	SDL_Rect aSize = this->GetSpriteSize(), bSize = _object.GetSpriteSize();
-	int aX = mX + mSpriteXOffset, aY = mY + mSpriteYOffset,
+	float aX = mX + mSpriteXOffset, aY = mY + mSpriteYOffset,
 		bX = _object.mX + _object.mSpriteXOffset, bY = _object.mX + _object.mSpriteXOffset;
 	return (
 		aX < bX + (bSize.w + _object.mSpriteXOffset) &&

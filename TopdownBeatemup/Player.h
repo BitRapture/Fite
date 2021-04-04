@@ -2,9 +2,14 @@
 #define _PLAYER_H_
 
 #include "Character.h"
+#include "EventManager.h"
 
 class Player : public Character
 {
+// Private variables
+private:
+	// Pointer to event system
+	EventManager* mEvents;
 
 // Public methods
 public:
@@ -14,7 +19,7 @@ public:
 
 public:
 	// Constructors
-	Player(SDL_Renderer* _ctx, SDL_Texture* _playerSprite);
+	Player(SDL_Renderer* _ctx, SDL_Texture* _playerSprite, EventManager* _eventManager);
 	// Destructor
 	~Player();
 };

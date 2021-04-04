@@ -14,7 +14,7 @@ private:
 	// Initialisation flag
 	bool mInitialised{ false };
 	// Main gameloop flag
-	bool mGameLoop{ false };
+	bool mGameLoop{ true };
 
 // GameManager systems
 private:

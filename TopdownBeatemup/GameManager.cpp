@@ -3,7 +3,7 @@
 void GameManager::Run()
 {
 	// Check SDL has initialised everything
-	mGameLoop = mInitialised;
+	if (!mInitialised) return;
 
 	// Declare and init time variables
 	Uint64 timeCurrent = 0, timeLast = SDL_GetPerformanceCounter();

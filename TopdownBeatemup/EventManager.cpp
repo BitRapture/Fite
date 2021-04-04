@@ -5,7 +5,7 @@ bool EventManager::PollWindowEv(SDL_Event& _ev)
 	bool terminateProgram = false;
 	switch (_ev.window.event)
 	{
-	case SDL_WINDOWEVENT_CLOSE: { terminateProgram = true; }
+	case SDL_WINDOWEVENT_CLOSE: { terminateProgram = true; break; }
 	}
 	return terminateProgram;
 }

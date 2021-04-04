@@ -14,9 +14,13 @@ void EventManager::PollInputDownEv(SDL_Event& _ev)
 {
 	switch (_ev.key.keysym.sym)
 	{
+	case SDLK_d:
 	case SDLK_RIGHT: { mDeltaX = 1; break; }
+	case SDLK_a:
 	case SDLK_LEFT: { mDeltaX = -1; break; }
+	case SDLK_w:
 	case SDLK_UP: { mDeltaY = -1; break; }
+	case SDLK_s:
 	case SDLK_DOWN: { mDeltaY = 1; break; }
 	}
 }
@@ -25,11 +29,21 @@ void EventManager::PollInputUpEv(SDL_Event& _ev)
 {
 	switch (_ev.key.keysym.sym)
 	{
+	case SDLK_d:
 	case SDLK_RIGHT: { if (mDeltaX > 0) mDeltaX = 0; break; }
+	case SDLK_a:
 	case SDLK_LEFT: { if (mDeltaX < 0) mDeltaX = 0; break; }
+	case SDLK_w:
 	case SDLK_UP: { if (mDeltaY < 0) mDeltaY = 0; break; }
+	case SDLK_s:
 	case SDLK_DOWN: { if (mDeltaY > 0) mDeltaY = 0; break; }
 	}
+}
+
+void EventManager::PollMouseMotionEv(SDL_Event& _ev)
+{
+	mMouseX = _ev.motion.x;
+	mMouseY = _ev.motion.y;
 }
 
 bool EventManager::Poll()
@@ -44,6 +58,7 @@ bool EventManager::Poll()
 		case SDL_QUIT: { terminateProgram = true; break; }
 		case SDL_KEYDOWN: { PollInputDownEv(event); break; }
 		case SDL_KEYUP: { PollInputUpEv(event); break; }
+		case SDL_MOUSEMOTION: { PollMouseMotionEv(event); break; }
 		}
 	}
 	return terminateProgram;
@@ -57,6 +72,16 @@ int EventManager::GetDeltaX()
 int EventManager::GetDeltaY()
 {
 	return mDeltaY;
+}
+
+int EventManager::GetMouseX()
+{
+	return mMouseX;
+}
+
+int EventManager::GetMouseY()
+{
+	return mMouseY;
 }
 
 // To-do

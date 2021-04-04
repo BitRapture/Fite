@@ -6,25 +6,15 @@ void GameManager::Run()
 
 	double tempTime = 0.1;
 
-	SDL_Surface* rawSheet = IMG_Load("FiteCharacter.png");
+	SDL_Surface* rawSheet = IMG_Load("Media/FiteCharacter.png");
 	SDL_Texture* spriteSheet = SDL_CreateTextureFromSurface(mContext, rawSheet);
 
-	Player mPlayer(mContext, spriteSheet);
+	Player mPlayer(mContext, spriteSheet, &mEvents);
 
 	while (mGameLoop)
 	{
-		SDL_Event ev;
-		while (SDL_PollEvent(&ev))
-		{
-			if (ev.type == SDL_WINDOWEVENT)
-			{
-				switch (ev.window.event)
-				{
-				case SDL_WINDOWEVENT_CLOSE:
-					mGameLoop = false;
-				}
-			}
-		}
+		mGameLoop = !mEvents.Poll();
+
 		SDL_RenderClear(mContext);
 
 		mPlayer.Update(tempTime);

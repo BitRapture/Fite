@@ -16,11 +16,17 @@ private:
 	// Main gameloop flag
 	bool mGameLoop{ false };
 
+// GameManager systems
+private:
+	// Event managing system
+	EventManager mEvents;
+
 // SDL2 variables
 private:
 	SDL_Window* mWindow{ nullptr };
 	SDL_Renderer* mContext{ nullptr };
 
+// Public methods
 public:
 	// Run the game
 	void Run();

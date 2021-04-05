@@ -1,45 +1,5 @@
 #include "GameObject.h"
 
-void GameObject::RenderSegment(SDL_Rect& _segment)
-{
-	SDL_Rect dest{ (int)(mX + mSpriteXOffset), (int)(mY + mSpriteYOffset), _segment.w, _segment.h };
-	SDL_RenderCopyEx(mContext, mSprite, &_segment, &dest, mSpriteAngle, NULL, SDL_FLIP_NONE);
-}
-
-void GameObject::AnimateSprite(double& _deltaTime)
-{
-	mSpriteTime += (float)_deltaTime;
-	if (mSpriteTime >= mSpriteSpeed)
-	{
-		mSpriteTime -= mSpriteSpeed;
-		if (++mSpriteIX >= mSpriteIXM)
-		{
-			mSpriteIX = 0;
-		}
-	}
-}
-
-void GameObject::RenderSprite()
-{
-	SDL_Rect frame{ mSpriteSize.x + (mSpriteIX * mSpriteSize.w), mSpriteSize.y + (mSpriteIY * mSpriteSize.h),
-		mSpriteSize.w, mSpriteSize.h
-	};
-	RenderSegment(frame);
-}
-
-void GameObject::ResetSpriteTime()
-{
-	mSpriteTime = 0;
-}
-
-bool GameObject::SetSpriteIndex(int _x, int _y)
-{
-	if (_x < 0 || _x >= mSpriteIXM || _y < 0 || _y >= mSpriteIYM) return false;
-	mSpriteIX = _x;
-	mSpriteIY = _y;
-	return true;
-}
-
 void GameObject::SetDirection(float _angle)
 {
 	float cos = cosf(_angle), sin = sinf(_angle), tempX = mDirX;
@@ -70,21 +30,6 @@ void GameObject::SetCardinalDir(int _dir)
 	}
 }
 
-int GameObject::GetSpriteXIndex()
-{
-	return mSpriteIX;
-}
-
-int GameObject::GetSpriteYIndex()
-{
-	return mSpriteIY;
-}
-
-SDL_Rect GameObject::GetSpriteSize()
-{
-	return mSpriteSize;
-}
-
 bool GameObject::CheckCollision(GameObject& _object)
 {
 	return ((powf(mX - _object.mX, 2) + powf(mY - _object.mY, 2)) <= powf(mSize + _object.mSize, 2));
@@ -92,21 +37,21 @@ bool GameObject::CheckCollision(GameObject& _object)
 
 bool GameObject::CheckAABBCollision(GameObject& _object)
 {
-	SDL_Rect aSize = this->GetSpriteSize(), bSize = _object.GetSpriteSize();
-	float aX = mX + mSpriteXOffset, aY = mY + mSpriteYOffset,
-		bX = _object.mX + _object.mSpriteXOffset, bY = _object.mX + _object.mSpriteXOffset;
+	SDL_Rect aSize = this->mBaseSprite.GetSpriteSize(), bSize = _object.mBaseSprite.GetSpriteSize();
+	float aX = mX + mBaseSprite.mSpriteXOffset, aY = mY + mBaseSprite.mSpriteYOffset,
+		bX = _object.mX + _object.mBaseSprite.mSpriteXOffset, bY = _object.mX + _object.mBaseSprite.mSpriteXOffset;
 	return (
-		aX < bX + (bSize.w + _object.mSpriteXOffset) &&
-		aY < bY + (bSize.h + _object.mSpriteYOffset) &&
-		aX + (aSize.w + mSpriteXOffset) > bX &&
-		aY + (aSize.h + mSpriteYOffset) > bY
+		aX < bX + (bSize.w + _object.mBaseSprite.mSpriteXOffset) &&
+		aY < bY + (bSize.h + _object.mBaseSprite.mSpriteYOffset) &&
+		aX + (aSize.w + mBaseSprite.mSpriteXOffset) > bX &&
+		aY + (aSize.h + mBaseSprite.mSpriteYOffset) > bY
 		);
 }
 
 GameObject::GameObject(SDL_Renderer* _ctx, SDL_Texture* _sprite, SDL_Rect& _spriteSize, int& _maxXFrames, int& _maxYFrames, float& _objectSize)
 :
-	mContext{ _ctx }, mSprite{ _sprite }, mSpriteSize{ _spriteSize },
-	mSpriteIXM{ _maxXFrames }, mSpriteIYM{ _maxYFrames },
+	mContext{ _ctx }, 
+	mBaseSprite(_sprite, _spriteSize, _maxXFrames, _maxYFrames),
 	mSize{ _objectSize }
 {
 

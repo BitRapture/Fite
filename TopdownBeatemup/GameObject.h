@@ -2,33 +2,16 @@
 #define _GAMEOBJECT_H_
 
 #include <SDL.h>
+#include "Sprite.h"
 #include "Entity.h"
 
 class GameObject : public Entity
 {
-// Hidden variables
-private:
-// Sprite variables
-	// GameObject spritesheet 
-	SDL_Texture* mSprite{ nullptr };
-	// Current sprite time
-	float mSpriteTime{ 0 };
-	// Size of the sprite
-	SDL_Rect mSpriteSize{ 0, 0, 0, 0 };
-	// Current frame of the sprite (x & y)
-	int mSpriteIX{ 0 }, mSpriteIY{ 0 };
-	// Max frames of the sprite (x & y)
-	int mSpriteIXM{ 0 }, mSpriteIYM{ 0 };
-
 // Shared variables
 protected:
-// Sprite variables
-	// Sprite angle (degrees)
-	float mSpriteAngle{ 0 };
-	// Sprite speed (miliseconds)
-	float mSpriteSpeed{ 0 };
-	// Sprite image offset from mX & mY
-	float mSpriteXOffset{ 0 }, mSpriteYOffset{ 0 };
+// Sprite class
+	// Base object sprite
+	Sprite mBaseSprite;
 
 // Generic GameObject variables
 	// GameObject size (circle radius)
@@ -43,16 +26,6 @@ protected:
 
 // Shared methods
 protected:
-	// Render segment of the spritesheet
-	void RenderSegment(SDL_Rect& _segment);
-	// Basic animation of sprite
-	void AnimateSprite(double& _deltaTime);
-	// Basic rendering of sprite
-	void RenderSprite();
-	// Reset the sprite time
-	void ResetSpriteTime();
-	// Set sprite frame index
-	bool SetSpriteIndex(int _x, int _y = 0);
 	// Set direction (radians)
 	void SetDirection(float _angle);
 	// Set cardinal direction (0 to 7) (clockwise)
@@ -61,12 +34,6 @@ protected:
 
 // Public methods
 public:
-	// Get sprite frame x-index
-	int GetSpriteXIndex();
-	// Get sprite frame y-index
-	int GetSpriteYIndex();
-	// Get sprite size
-	SDL_Rect GetSpriteSize();
 	// Circle-Circle collision (main form of object collision)
 	bool CheckCollision(GameObject& _object);
 	// AABB collision, based off sprite size

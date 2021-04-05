@@ -46,7 +46,7 @@ void GameManager::Run()
 
 GameManager::GameManager()
 {
-	mWindow = SDL_CreateWindow("Fite", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, 0);
+	mWindow = SDL_CreateWindow("Fite", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, 0);
 	mContext = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
 
 	mInitialised = (mWindow != nullptr && mContext != nullptr);

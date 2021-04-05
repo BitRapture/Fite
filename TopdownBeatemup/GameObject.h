@@ -85,5 +85,7 @@ public:
 // Add camera pointer
 //		-> Create camera class
 // Let mX mY get offset by camera pos
+// Separate sprite methods/members to a sprite class
+//		-> Allows for additional sprites to be used
 
 #endif

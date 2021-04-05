@@ -10,6 +10,7 @@ void Player::Update(double& _deltaTime)
 	mSpriteAngle = (rad >= 0 ? rad : (2 * 3.1415f) + rad) * (180 / 3.1415f);
 }
 
+
 void Player::Render()
 {
 	RenderSprite();

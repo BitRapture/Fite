@@ -7,13 +7,13 @@ void Player::Update(double& _deltaTime)
 
 	float rad = atan2f(mY - mEvents->GetMouseY(), mX - mEvents->GetMouseX());
 
-	mSpriteAngle = (rad >= 0 ? rad : (2 * 3.1415f) + rad) * (180 / 3.1415f);
+	mBaseSprite.SetSpriteAngle((rad >= 0 ? rad : (2 * 3.1415f) + rad) * (180 / 3.1415f));
 }
 
 
 void Player::Render()
 {
-	RenderSprite();
+	mBaseSprite.RenderSprite(mContext, mX, mY);
 }
 
 Player::Player(SDL_Renderer* _ctx, SDL_Texture* _playerSprite, EventManager* _eventManager)
@@ -21,9 +21,9 @@ Player::Player(SDL_Renderer* _ctx, SDL_Texture* _playerSprite, EventManager* _ev
 	Character(_ctx, _playerSprite, {0, 0, 64, 64}, 1, 0, 16),
 	mEvents{ _eventManager }
 {
-	mSpriteSpeed = 20.f;
-	mSpriteXOffset = -32;
-	mSpriteYOffset = -32;
+	mBaseSprite.mSpriteSpeed = 20.f;
+	mBaseSprite.mSpriteXOffset = -32;
+	mBaseSprite.mSpriteYOffset = -32;
 	mX = 32;
 	mY = 32;
 }

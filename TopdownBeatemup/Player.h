@@ -8,6 +8,11 @@ class Player : public Character
 {
 // Private variables
 private:
+// Additional sprites
+	// Player legs
+	Sprite mLegsSprite;
+
+// External systems
 	// Pointer to event system
 	EventManager* mEvents;
 

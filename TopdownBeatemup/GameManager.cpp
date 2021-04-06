@@ -17,8 +17,19 @@ void GameManager::Run()
 	SDL_Texture* spriteSheet = SDL_CreateTextureFromSurface(mContext, rawSheet);
 	SDL_Texture* spriteESheet = SDL_CreateTextureFromSurface(mContext, rawESheet);
 
-	Player mPlayer(mContext, spriteSheet, &mEvents);
-	Enemy mEnemy(mContext, spriteESheet, &mPlayer);
+	std::vector<Entity*> entityList;
+
+	entityList.push_back(new Player(mContext, spriteSheet, &mEvents));
+	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 64, 0));
+	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 128, 100));
+	entityList.push_back(new Enemy(mContext, spriteSheet, (Player*)entityList[0], 192, 150));
+	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 256, 200));
+	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 320, 250));
+	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 384+64, 300));
+	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 448+64, 350));
+	entityList.push_back(new Enemy(mContext, spriteSheet, (Player*)entityList[0], 512+64, 400));
+	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 576+64, 450));
+	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 640+64, 500));
 
 	while (mGameLoop)
 	{
@@ -31,17 +42,17 @@ void GameManager::Run()
 		timeLast = timeCurrent;
 
 		// Update methods
-		mPlayer.Update(deltaTime);
-		mEnemy.Update(deltaTime);
+		for (int i = 0; i < entityList.size(); ++i) entityList[i]->Update(deltaTime);
 
 		// Render methods
 		SDL_RenderClear(mContext);
 
-		mPlayer.Render();
-		mEnemy.Render();
+		for (int i = 0; i < entityList.size(); ++i) entityList[i]->Render();
 
 		SDL_RenderPresent(mContext);
 	}
+
+	for (int i = 0; i < entityList.size(); ++i) delete entityList[i];
 
 	SDL_DestroyTexture(spriteSheet);
 	SDL_DestroyTexture(spriteESheet);

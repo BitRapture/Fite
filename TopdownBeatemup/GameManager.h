@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include <vector>
+
 #include "EventManager.h"
 #include "Player.h"
 #include "Enemy.h"

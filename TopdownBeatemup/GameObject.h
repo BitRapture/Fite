@@ -39,6 +39,10 @@ public:
 	// AABB collision, based off sprite size
 	bool CheckAABBCollision(GameObject& _object);
 
+	// Get x & y positions
+	float GetX();
+	float GetY();
+
 public:
 	// Constructors
 	GameObject(SDL_Renderer* _ctx, SDL_Texture* _sprite, SDL_Rect& _spriteSize, int& _maxXFrames, int& _maxYFrames, float& _objectSize);
@@ -52,7 +56,7 @@ public:
 // Add camera pointer
 //		-> Create camera class
 // Let mX mY get offset by camera pos
-// Separate sprite methods/members to a sprite class
-//		-> Allows for additional sprites to be used
+// Add mCollided pointer
+//		-> Lets objects sort out collisions with one another
 
 #endif

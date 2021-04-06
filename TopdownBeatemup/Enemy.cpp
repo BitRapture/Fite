@@ -14,13 +14,13 @@ void Enemy::Render()
 	mBaseSprite.RenderSprite(mContext, mX, mY);
 }
 
-Enemy::Enemy(SDL_Renderer* _ctx, SDL_Texture* _enemySprite, Player* _player)
+Enemy::Enemy(SDL_Renderer* _ctx, SDL_Texture* _enemySprite, Player* _player, float _startingX, float _startingY)
 :
 	Character(_ctx, _enemySprite, {0, 0, 64, 64}, 1, 1, 20),
 	mFocus{ _player }
 {
 	mBaseSprite.mSpriteXOffset = -32;
 	mBaseSprite.mSpriteYOffset = -32;
-	mX = 400;
-	mY = 400;
+	mX = _startingX;
+	mY = _startingY;
 }

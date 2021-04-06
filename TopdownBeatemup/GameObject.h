@@ -58,5 +58,8 @@ public:
 // Let mX mY get offset by camera pos
 // Add mCollided pointer
 //		-> Lets objects sort out collisions with one another
+// Move mContext to Entity.h
+//		-> All entities should have a pointer to the renderer
+//		-> overide the default entity ctor
 
 #endif

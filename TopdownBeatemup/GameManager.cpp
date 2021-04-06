@@ -44,7 +44,9 @@ void GameManager::Run()
 	}
 
 	SDL_DestroyTexture(spriteSheet);
+	SDL_DestroyTexture(spriteESheet);
 	SDL_FreeSurface(rawSheet);
+	SDL_FreeSurface(rawESheet);
 }
 
 GameManager::GameManager()

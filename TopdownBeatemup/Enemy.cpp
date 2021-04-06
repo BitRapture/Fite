@@ -16,7 +16,7 @@ void Enemy::Render()
 
 Enemy::Enemy(SDL_Renderer* _ctx, SDL_Texture* _enemySprite, Player* _player, float _startingX, float _startingY)
 :
-	Character(_ctx, _enemySprite, {0, 0, 64, 64}, 1, 1, 20),
+	Character(_ctx, _enemySprite, {0, 0, 64, 64}, 1, 1, 20, _startingX, _startingY),
 	mFocus{ _player }
 {
 	mBaseSprite.mSpriteXOffset = -32;

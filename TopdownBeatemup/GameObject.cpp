@@ -48,19 +48,9 @@ bool GameObject::CheckAABBCollision(GameObject& _object)
 		);
 }
 
-float GameObject::GetX()
-{
-	return mX;
-}
-
-float GameObject::GetY()
-{
-	return mY;
-}
-
-GameObject::GameObject(SDL_Renderer* _ctx, SDL_Texture* _sprite, SDL_Rect& _spriteSize, int& _maxXFrames, int& _maxYFrames, float& _objectSize)
-:
-	mContext{ _ctx }, 
+GameObject::GameObject(SDL_Renderer* _ctx, SDL_Texture* _sprite, SDL_Rect& _spriteSize, int& _maxXFrames, int& _maxYFrames, float& _objectSize, float& _startingX, float& _startingY)
+	:
+	Entity(_ctx, _startingX, _startingY),
 	mBaseSprite(_sprite, _spriteSize, _maxXFrames, _maxYFrames),
 	mSize{ _objectSize }
 {

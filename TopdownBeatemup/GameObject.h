@@ -20,10 +20,6 @@ protected:
 	// (pointing right by default)
 	float mDirX{ 1 }, mDirY{ 0 };
 
-// SDL variables
-	// Pointer to main renderer
-	SDL_Renderer* mContext{ nullptr };
-
 // Shared methods
 protected:
 	// Set direction (radians)
@@ -39,13 +35,9 @@ public:
 	// AABB collision, based off sprite size
 	bool CheckAABBCollision(GameObject& _object);
 
-	// Get x & y positions
-	float GetX();
-	float GetY();
-
 public:
 	// Constructors
-	GameObject(SDL_Renderer* _ctx, SDL_Texture* _sprite, SDL_Rect& _spriteSize, int& _maxXFrames, int& _maxYFrames, float& _objectSize);
+	GameObject(SDL_Renderer* _ctx, SDL_Texture* _sprite, SDL_Rect& _spriteSize, int& _maxXFrames, int& _maxYFrames, float& _objectSize, float& _startingX, float& _startingY);
 	// Destructor
 	~GameObject();
 

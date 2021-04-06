@@ -32,7 +32,7 @@ void Player::Render()
 
 Player::Player(SDL_Renderer* _ctx, SDL_Texture* _playerSprite, EventManager* _eventManager)
 	:
-	Character(_ctx, _playerSprite, { 0, 0, 64, 64 }, 1, 1, 16),
+	Character(_ctx, _playerSprite, { 0, 0, 64, 64 }, 1, 1, 16, 320, 240),
 	mLegsSprite(_playerSprite, { 0, 0, 64, 64 }, 17, 2),
 	mEvents{ _eventManager }
 {

@@ -29,7 +29,8 @@ void GameManager::Run()
 	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 448+64, 350));
 	entityList.push_back(new Enemy(mContext, spriteSheet, (Player*)entityList[0], 512+64, 400));
 	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 576+64, 450));
-	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 640+64, 500));
+	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 640 + 64, 500));
+	entityList.push_back(new Enemy(mContext, spriteSheet, (Player*)entityList[0], 1280 - 64, 720 - 64));
 
 	while (mGameLoop)
 	{

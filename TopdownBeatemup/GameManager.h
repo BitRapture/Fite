@@ -6,6 +6,7 @@
 
 #include "EventManager.h"
 #include "Player.h"
+#include "Enemy.h"
 
 class GameManager
 {

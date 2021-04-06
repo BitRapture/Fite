@@ -13,9 +13,12 @@ void GameManager::Run()
 	double counterFreq = 1000.0 / SDL_GetPerformanceFrequency();
 
 	SDL_Surface* rawSheet = IMG_Load("Media/FiteCharacter.png");
+	SDL_Surface* rawESheet = IMG_Load("Media/FiteEnemy.png");
 	SDL_Texture* spriteSheet = SDL_CreateTextureFromSurface(mContext, rawSheet);
+	SDL_Texture* spriteESheet = SDL_CreateTextureFromSurface(mContext, rawESheet);
 
 	Player mPlayer(mContext, spriteSheet, &mEvents);
+	Enemy mEnemy(mContext, spriteESheet, &mPlayer);
 
 	while (mGameLoop)
 	{
@@ -29,15 +32,15 @@ void GameManager::Run()
 
 		// Update methods
 		mPlayer.Update(deltaTime);
+		mEnemy.Update(deltaTime);
 
 		// Render methods
 		SDL_RenderClear(mContext);
 
 		mPlayer.Render();
+		mEnemy.Render();
 
 		SDL_RenderPresent(mContext);
-
-		SDL_Log("dT: %f", deltaTime);
 	}
 
 	SDL_DestroyTexture(spriteSheet);

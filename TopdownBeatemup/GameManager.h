@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "EventManager.h"
+#include "GameObjectManager.h"
 #include "Player.h"
 #include "Enemy.h"
 
@@ -23,6 +24,12 @@ private:
 private:
 	// Event managing system
 	EventManager mEvents;
+	// Object managing system
+	GameObjectManager mObjects;
+	
+	// Full entity list
+	// Virtual dispatching system
+	std::vector<Entity*> mEntityList;
 
 // SDL2 variables
 private:

@@ -14,23 +14,6 @@ void GameManager::Run()
 
 	SDL_Surface* rawSheet = IMG_Load("Media/FiteCharacter.png");
 	SDL_Surface* rawESheet = IMG_Load("Media/FiteEnemy.png");
-	SDL_Texture* spriteSheet = SDL_CreateTextureFromSurface(mContext, rawSheet);
-	SDL_Texture* spriteESheet = SDL_CreateTextureFromSurface(mContext, rawESheet);
-
-	std::vector<Entity*> entityList;
-
-	entityList.push_back(new Player(mContext, spriteSheet, &mEvents));
-	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 64, 0));
-	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 128, 100));
-	entityList.push_back(new Enemy(mContext, spriteSheet, (Player*)entityList[0], 192, 150));
-	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 256, 200));
-	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 320, 250));
-	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 384+64, 300));
-	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 448+64, 350));
-	entityList.push_back(new Enemy(mContext, spriteSheet, (Player*)entityList[0], 512+64, 400));
-	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 576+64, 450));
-	entityList.push_back(new Enemy(mContext, spriteESheet, (Player*)entityList[0], 640 + 64, 500));
-	entityList.push_back(new Enemy(mContext, spriteSheet, (Player*)entityList[0], 1280 - 64, 720 - 64));
 
 	while (mGameLoop)
 	{
@@ -43,20 +26,13 @@ void GameManager::Run()
 		timeLast = timeCurrent;
 
 		// Update methods
-		for (int i = 0; i < entityList.size(); ++i) entityList[i]->Update(deltaTime);
 
 		// Render methods
 		SDL_RenderClear(mContext);
 
-		for (int i = 0; i < entityList.size(); ++i) entityList[i]->Render();
-
 		SDL_RenderPresent(mContext);
 	}
 
-	for (int i = 0; i < entityList.size(); ++i) delete entityList[i];
-
-	SDL_DestroyTexture(spriteSheet);
-	SDL_DestroyTexture(spriteESheet);
 	SDL_FreeSurface(rawSheet);
 	SDL_FreeSurface(rawESheet);
 }

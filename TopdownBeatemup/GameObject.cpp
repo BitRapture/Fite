@@ -30,19 +30,19 @@ void GameObject::SetCardinalDir(int _dir)
 	}
 }
 
-bool GameObject::CheckCollision(GameObject& _object)
+bool GameObject::CheckCollision(GameObject* _object)
 {
-	return ((powf(mX - _object.mX, 2) + powf(mY - _object.mY, 2)) <= powf(mSize + _object.mSize, 2));
+	return ((powf(mX - _object->mX, 2) + powf(mY - _object->mY, 2)) <= powf(mSize + _object->mSize, 2));
 }
 
-bool GameObject::CheckAABBCollision(GameObject& _object)
+bool GameObject::CheckAABBCollision(GameObject* _object)
 {
-	SDL_Rect aSize = this->mBaseSprite.GetSpriteSize(), bSize = _object.mBaseSprite.GetSpriteSize();
+	SDL_Rect aSize = this->mBaseSprite.GetSpriteSize(), bSize = _object->mBaseSprite.GetSpriteSize();
 	float aX = mX + mBaseSprite.mSpriteXOffset, aY = mY + mBaseSprite.mSpriteYOffset,
-		bX = _object.mX + _object.mBaseSprite.mSpriteXOffset, bY = _object.mX + _object.mBaseSprite.mSpriteXOffset;
+		bX = _object->mX + _object->mBaseSprite.mSpriteXOffset, bY = _object->mX + _object->mBaseSprite.mSpriteXOffset;
 	return (
-		aX < bX + (bSize.w + _object.mBaseSprite.mSpriteXOffset) &&
-		aY < bY + (bSize.h + _object.mBaseSprite.mSpriteYOffset) &&
+		aX < bX + (bSize.w + _object->mBaseSprite.mSpriteXOffset) &&
+		aY < bY + (bSize.h + _object->mBaseSprite.mSpriteYOffset) &&
 		aX + (aSize.w + mBaseSprite.mSpriteXOffset) > bX &&
 		aY + (aSize.h + mBaseSprite.mSpriteYOffset) > bY
 		);

@@ -2,11 +2,23 @@
 #define _GAMEOBJECT_H_
 
 #include <SDL.h>
+#include <vector>
 #include "Sprite.h"
 #include "Entity.h"
+#include "GameObjectManager.h"
 
 class GameObject : public Entity
 {
+// Share private variables with the object manager
+friend class GameObjectManager;
+
+// Hidden variables
+private:
+	// Pointer to the object managing system
+	GameObjectManager* mObjectManager{ nullptr };
+	// GameObjectManager grid indices 
+	std::vector<int> mOMIndices;
+
 // Shared variables
 protected:
 // Sprite class
@@ -19,6 +31,8 @@ protected:
 	// GameObject direction (unit vector) 
 	// (pointing right by default)
 	float mDirX{ 1 }, mDirY{ 0 };
+	// GameObject collision stack
+	std::vector<GameObject*> mCollisions;
 
 // Shared methods
 protected:
@@ -31,9 +45,9 @@ protected:
 // Public methods
 public:
 	// Circle-Circle collision (main form of object collision)
-	bool CheckCollision(GameObject& _object);
+	bool CheckCollision(GameObject* _object);
 	// AABB collision, based off sprite size
-	bool CheckAABBCollision(GameObject& _object);
+	bool CheckAABBCollision(GameObject* _object);
 
 public:
 	// Constructors

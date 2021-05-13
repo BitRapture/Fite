@@ -11,7 +11,7 @@ private:
 	// Health (0 <= death)
 	int mHealth{ 0 };
 	// Basic states
-	enum class CharacterState { IDLE, WALKING, ATTACKING, DYING, DEAD } mState;
+	enum class CharacterState { IDLE, WALKING, ATTACKING, DEAD } mState;
 
 
 // Shared methods

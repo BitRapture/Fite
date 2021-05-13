@@ -23,7 +23,7 @@ public:
 	void Render() override;
 
 	// Constructor
-	Player(SDL_Renderer* _ctx, SDL_Texture* _playerSprite, EventManager* _eventManager);
+	Player(SDL_Renderer* _ctx,  SDL_Texture* _playerSprite, EventManager* _eventManager);
 	// Destructor
 	~Player();
 };

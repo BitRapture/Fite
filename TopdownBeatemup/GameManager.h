@@ -7,7 +7,8 @@
 #include <vector>
 
 #include "EventManager.h"
-#include "GameObjectManager.h"
+#include "CollisionManager.h"
+#include "Projectiles.h"
 #include "Player.h"
 #include "Enemy.h"
 
@@ -24,16 +25,19 @@ private:
 private:
 	// Event managing system
 	EventManager mEvents;
-	// Object managing system
-	GameObjectManager mObjects;
 	
 	// Full entity list
 	// Virtual dispatching system
 	std::vector<Entity*> mEntityList;
 
+	// GameObject collision managing system
+	CollisionManager mCollisions;
+
 // SDL2 variables
 private:
+	// The application window
 	SDL_Window* mWindow{ nullptr };
+	// The renderer
 	SDL_Renderer* mContext{ nullptr };
 
 // Public methods

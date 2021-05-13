@@ -13,6 +13,11 @@ protected:
 	// Pointer to the renderer
 	SDL_Renderer* mContext{ nullptr };
 
+// Entity flags
+protected:
+	// To be destroyed
+	bool mDestroy{ false };
+
 // Pure virtual methods
 public:
 	// Update method
@@ -23,6 +28,9 @@ public:
 	// Get x & y positions
 	float GetX();
 	float GetY();
+
+	// Check if entity is to be destroyed
+	bool CheckDestruction();
 
 	// Constructor
 	Entity(SDL_Renderer* _ctx, float& _startingX, float& _startingY);

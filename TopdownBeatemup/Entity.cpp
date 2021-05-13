@@ -10,6 +10,11 @@ float Entity::GetY()
 	return mY;
 }
 
+bool Entity::CheckDestruction()
+{
+	return mDestroy;
+}
+
 Entity::Entity(SDL_Renderer* _ctx, float& _startingX, float& _startingY)
 :
 	mContext{ _ctx },

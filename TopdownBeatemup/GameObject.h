@@ -5,19 +5,11 @@
 #include <vector>
 #include "Sprite.h"
 #include "Entity.h"
-#include "GameObjectManager.h"
 
 class GameObject : public Entity
 {
-// Share private variables with the object manager
-friend class GameObjectManager;
-
-// Hidden variables
-private:
-	// Pointer to the object managing system
-	GameObjectManager* mObjectManager{ nullptr };
-	// GameObjectManager grid indices 
-	std::vector<int> mOMIndices;
+// Let the collision manager view private variables
+friend class CollisionManager;
 
 // Shared variables
 protected:
@@ -31,26 +23,32 @@ protected:
 	// GameObject direction (unit vector) 
 	// (pointing right by default)
 	float mDirX{ 1 }, mDirY{ 0 };
+
 	// GameObject collision stack
-	std::vector<GameObject*> mCollisions;
+	// Allows *this to handle other GameObject collisions
+	std::vector<GameObject*> mCollisionStack;
+
+// GameObject flags
+	// Does this object collide with other objects
+	bool mCollidable{ false };
 
 // Shared methods
 protected:
 	// Set direction (radians)
 	void SetDirection(float _angle);
-	// Set cardinal direction (0 to 7) (clockwise)
-	// Precalculated unit vector directions
-	void SetCardinalDir(int _dir);
 
 // Public methods
 public:
-	// Circle-Circle collision (main form of object collision)
-	bool CheckCollision(GameObject* _object);
-	// AABB collision, based off sprite size
-	bool CheckAABBCollision(GameObject* _object);
+	// Predict Circle-Circle collision, used to precalculate movement, attacks, etc
+	bool PredictCollision(GameObject* _object, float& _x, float& _y, float& _searchRadius);
+
+	// Get direction X
+	float GetDirX();
+	// Get direction Y
+	float GetDirY();
 
 public:
-	// Constructors
+	// Constructor
 	GameObject(SDL_Renderer* _ctx, SDL_Texture* _sprite, SDL_Rect& _spriteSize, int& _maxXFrames, int& _maxYFrames, float& _objectSize, float& _startingX, float& _startingY);
 	// Destructor
 	~GameObject();
@@ -64,8 +62,5 @@ public:
 // Let mX mY get offset by camera pos
 // Add mCollided pointer
 //		-> Lets objects sort out collisions with one another
-// Move mContext to Entity.h
-//		-> All entities should have a pointer to the renderer
-//		-> overide the default entity ctor
 
 #endif

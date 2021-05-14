@@ -15,7 +15,7 @@ public:
 	void Render() override;
 
 	// Constructor
-	Bullet(SDL_Renderer* _ctx, SDL_Texture* _sprite, GameObject* _shooter);
+	Bullet(SDL_Renderer* _ctx, ResourceManager* _resources, GameObject* _shooter, float _startingX, float _startingY);
 };
 
 #endif

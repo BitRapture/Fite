@@ -2,10 +2,10 @@
 
 void Bullet::Update(double& _deltaTime)
 {
+	CalculateFallOff(_deltaTime);
 	// Check collision stack
 	if (mCollisionStack.size() > 0)
 	{
-		SDL_Log("%i", mCollisionStack.size());
 		for (std::vector<GameObject*>::iterator it = mCollisionStack.begin(); it != mCollisionStack.end(); ++it)
 		{
 			// Skip if the collision is from the shooter
@@ -27,15 +27,17 @@ void Bullet::Render()
 	mBaseSprite.RenderSprite(mContext, mX, mY);
 }
 
-Bullet::Bullet(SDL_Renderer* _ctx, SDL_Texture* _sprite, GameObject* _shooter)
+Bullet::Bullet(SDL_Renderer* _ctx, ResourceManager* _resources, GameObject* _shooter, float _startingX, float _startingY)
 :
-	Projectile(_ctx, _sprite, {0, 0, 64, 64}, 1, 1, 3, _shooter->GetX(), _shooter->GetY(), _shooter)
+	Projectile(_ctx, _resources, {0, 0, 64, 64}, GameObjects::Tag(AllObjects::PROJECTILE), 1, 1, 8, _startingX, _startingY, _shooter)
 {
 	// Center the sprite
 	mBaseSprite.mSpriteXOffset = -32;
 	mBaseSprite.mSpriteYOffset = -32;
 	// Set the damage
-	mDamage = 10;
+	mDamage = 1;
 	// Set the speed
-	mSpeed = 0.3f;
+	mSpeed = 1.5f;
+	// Set the bullet fall-off
+	mFallOff = 500;
 }

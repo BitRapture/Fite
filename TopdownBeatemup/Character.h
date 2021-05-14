@@ -2,11 +2,12 @@
 #define _CHARACTER_H_
 
 #include "GameObject.h"
+#include "Projectiles.h"
 
 class Character : public GameObject
 {
-// Hidden variables
-private:
+// Shared variables
+protected:
 // Character variables
 	// Health (0 <= death)
 	int mHealth{ 0 };
@@ -16,11 +17,12 @@ private:
 
 // Shared methods
 protected:
-
+	// Check on health, sets state to DEAD if <= 0
+	void CheckHealth();
 
 public:
 	// Constructor
-	Character(SDL_Renderer* _ctx, SDL_Texture* _sprite, SDL_Rect _spriteSize, int _maxXFrames, int _maxYFrames, float _objectSize, float _startingX, float _startingY);
+	Character(SDL_Renderer* _ctx, ResourceManager* _resources, SDL_Rect _spriteSize, int _ID, int _maxXFrames, int _maxYFrames, float _objectSize, float _startingX, float _startingY);
 	// Destructor
 	~Character();
 };

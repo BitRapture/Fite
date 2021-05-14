@@ -19,7 +19,7 @@ public:
 	void Render() override;
 
 	// Constructor
-	Enemy(SDL_Renderer* _ctx, SDL_Texture* _enemySprite, Player* _player, float _startingX, float _startingY);
+	Enemy(SDL_Renderer* _ctx, ResourceManager* _resources, Player* _player, float _startingX, float _startingY);
 };
 
 #endif

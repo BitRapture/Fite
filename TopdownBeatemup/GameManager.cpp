@@ -1,5 +1,17 @@
 #include "GameManager.h"
 
+void GameManager::CreateGameObject(GameObject* _object, bool _isSelfCollidable)
+{
+	mGameObjects.push_back(_object);
+	mEntityList.push_back(_object);
+	mCollisions.AddObject(_object, _isSelfCollidable);
+}
+
+void GameManager::CreateEntity(Entity* _entity)
+{
+	mEntityList.push_back(_entity);
+}
+
 void GameManager::Run()
 {
 	// Check SDL has initialised everything
@@ -12,7 +24,7 @@ void GameManager::Run()
 	// Counter frequency
 	double counterFreq = 1000.0 / SDL_GetPerformanceFrequency();
 
-	SDL_Surface* sPlayer = IMG_Load("Media/FiteCharacter.png");
+	SDL_Surface* sPlayer = IMG_Load("Media/FiteCharacterSheet.png");
 	SDL_Surface* sEnemy = IMG_Load("Media/FiteEnemy.png");
 	SDL_Surface* sBullet = IMG_Load("Media/ProjectileBullet.png");
 	SDL_Texture* tPlayer = SDL_CreateTextureFromSurface(mContext, sPlayer);
@@ -23,14 +35,14 @@ void GameManager::Run()
 	SDL_FreeSurface(sEnemy);
 	SDL_FreeSurface(sBullet);
 
-	GameObject* player = new Player(mContext, tPlayer, &mEvents);
-	GameObject* enemy = new Enemy(mContext, tEnemy, (Player*)player, 128, 128);
+	GameObject* player = new Player(mContext, &mResources, &mEvents);
 
-	mEntityList.push_back(enemy);
-	mEntityList.push_back(player);
-	mCollisions.AddObject(enemy);
+	CreateGameObject(player);
 
-	int am = 0;
+	CreateGameObject(new Enemy(mContext, &mResources, (Player*)player, 300, 300), true);
+	CreateGameObject(new Enemy(mContext, &mResources, (Player*)player, 128, 128), true);
+	CreateGameObject(new Enemy(mContext, &mResources, (Player*)player, 700, 700), true);
+	CreateGameObject(new Enemy(mContext, &mResources, (Player*)player, 500, 200), true);
 
 	while (mGameLoop)
 	{
@@ -43,7 +55,17 @@ void GameManager::Run()
 		timeLast = timeCurrent;
 
 		// Update the collision manager
-		mCollisions.Update();
+		mCollisions.UpdateCollisions();
+
+		// Remove any GameObjects from the GameObjects list waiting for destruction
+		for (std::vector<GameObject*>::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
+		{
+			if ((*it)->CheckDestruction())
+			{
+				it = mGameObjects.erase(it);
+				if (it == mGameObjects.end()) { break; }
+			}
+		}
 
 		// Remove any entities waiting for destruction
 		for (std::vector<Entity*>::iterator it = mEntityList.begin(); it != mEntityList.end(); ++it)
@@ -52,16 +74,24 @@ void GameManager::Run()
 			{
 				// Destroy entity
 				delete (*it);
+				// Remove dangling pointer
+				(*it) = nullptr;
 				// Erase entity pointer and iterate over it
 				it = mEntityList.erase(it);
 				if (it == mEntityList.end()) { break; }
 			}
 		}
 
-		if (mEvents.GetMouseL())
+		// Create all GameObjects on GameObject creation queues
+		for (size_t it = 0; it < mGameObjects.size(); ++it)
 		{
-			mEntityList.push_back(new Bullet(mContext, tBullet, player));
-			mCollisions.AddObject((GameObject*)mEntityList.back());
+			size_t creationSize = mGameObjects[it]->GetCreationQueueSize();
+			for (size_t c = 0; c < creationSize; ++c)
+			{
+				GameObject* newObject = mGameObjects[it]->AccessCreationQueue(c);
+				CreateGameObject(newObject, mGameObjects[it]->AccessCreationQueueCollisions(c));
+			}
+			mGameObjects[it]->ClearCreationQueue();
 		}
 
 		// Update every entity
@@ -70,7 +100,11 @@ void GameManager::Run()
 			(*it)->Update(deltaTime);
 		}
 
+		// Update the collision manager object listing
+		mCollisions.UpdateCollisionList();
+
 		// Clear the renderer
+		SDL_SetRenderDrawColor(mContext, 0, 0, 0, 255);
 		SDL_RenderClear(mContext);
 	
 		// Render every entity
@@ -93,7 +127,7 @@ GameManager::GameManager()
 	mWindow = SDL_CreateWindow("Fite", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, 0);
 	mContext = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
 
-	mInitialised = (mWindow != nullptr && mContext != nullptr);
+	mInitialised = (mWindow != nullptr && mContext != nullptr && mResources.Init(mContext));
 }
 
 GameManager::~GameManager()
@@ -107,4 +141,6 @@ GameManager::~GameManager()
 		delete (*it);
 	}
 	mEntityList.clear();
+	// Clear GameObjects list, since entities deleted all objects from it (just dangling pointers now)
+	mGameObjects.clear();
 }

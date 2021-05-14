@@ -4,20 +4,29 @@
 #include <vector>
 #include "GameObject.h"
 
+struct TaggedObject
+{
+	GameObject* mObject{ nullptr };
+	int mTag{ 0 };
+};
+
 class CollisionManager
 {
 // Hidden variables
 private:
 	// References to instantiated gameobjects
-	std::vector<GameObject*> mObjects;
+	std::vector<TaggedObject> mObjects;
 
 // Public methods
 public:
 	// Add a GameObject to the system
-	void AddObject(GameObject* _object);
+	void AddObject(GameObject* _object, bool _selfCollidable = false);
 
 	// Update method (check for collisions)
-	void Update();
+	void UpdateCollisions();
+
+	// Update method (remove destroyed objects)
+	void UpdateCollisionList();
 
 };
 

@@ -19,6 +19,19 @@ void Player::UpdateGun(double& _deltaTime)
 	{
 		mGunWait = mGunFireRate;
 		CreateObject(new Bullet(mContext, mResources, this, mX + (mDirX * -mGunOffset), mY + (mDirY * -mGunOffset)));
+		mResources->PlaySoundEffect(SoundEffects::BULLET_SHOOT);
+	}
+
+	// Just for the looks
+	if (mScore > 100 && mGunSprite.GetSpriteXIndex() == 0)
+	{
+		mGunSprite.SetSpriteXIndex(1);
+		mResources->PlaySoundEffect(SoundEffects::POWERUP);
+	}
+	else if (mScore > 200 && mGunSprite.GetSpriteXIndex() == 1)
+	{
+		mGunSprite.SetSpriteXIndex(2);
+		mResources->PlaySoundEffect(SoundEffects::POWERUP);
 	}
 }
 
@@ -29,11 +42,11 @@ void Player::UpdateMovement(double& _deltaTime)
 	bool mouseR = mEvents->GetMouseR();
 
 	// Player speed
-	float speed = 0.2f;
+	float speed = 0.4f;
 	if (mouseR && mSprintWait >= 0 && !mSprintCoolDown)
 	{
 		mSprintWait -= (float)_deltaTime;
-		speed = 0.5f;
+		speed = 0.9f;
 		if (mSprintWait <= 0) { mSprintCoolDown = true; }
 	}
 	if (mSprintWait <= mSprintAmount && mSprintCoolDown)
@@ -43,6 +56,7 @@ void Player::UpdateMovement(double& _deltaTime)
 		{
 			mSprintWait = mSprintAmount;
 			mSprintCoolDown = false;
+			mResources->PlaySoundEffect(SoundEffects::POWERUP);
 		}
 	}
 
@@ -58,8 +72,11 @@ void Player::UpdateMovement(double& _deltaTime)
 	}
 
 	// Move player
-	mX += dX * speed * (float)_deltaTime;
-	mY += dY * speed * (float)_deltaTime;
+	float pmX = mX + (dX * speed * (float)_deltaTime);
+	float pmY = mY + (dY * speed * (float)_deltaTime);
+	if (pmX >= 0 && pmX <= 1280) mX = pmX;
+	if (pmY >= 0 && pmY <= 720) mY = pmY;
+
 
 	// Get the difference between the player coords and mouse cursor
 	mDirX = mX - mEvents->GetMouseX();
@@ -84,20 +101,74 @@ void Player::UpdateMovement(double& _deltaTime)
 
 void Player::Update(double& _deltaTime)
 {
+	// Check collision stack
+	if (mCollisionStack.size() > 0 && mState != CharacterState::DEAD)
+	{
+		for (std::vector<GameObject*>::iterator it = mCollisionStack.begin(); it != mCollisionStack.end(); ++it)
+		{
+			switch (GameObjects::ID((*it)->GetID()))
+			{
+				case AllObjects::BULLET:
+				{
+					if (!((Projectile*)(*it))->CheckShooter(this))
+					{
+						mHealth--;
+						mResources->PlaySoundEffect(SoundEffects::PLAYER_HURT);
+					}
+					break;
+				}
+			}
+		}
+	}
+
 	// Update movement
 	UpdateMovement(_deltaTime);
 
 	// Update gun mechanics
 	UpdateGun(_deltaTime);
+
+	// Add to score every second
+	mScoreWait -= (float)_deltaTime;
+	if (mScoreWait <= 0)
+	{
+		mScoreWait = 1000;
+		mScore++;
+	}
 }
 
 
 void Player::Render()
 {
+	// Render sprites
 	mLegsSprite.RenderSprite(mContext, mX, mY);
 	mBaseSprite.RenderSprite(mContext, mX, mY);
 	float gunOffsetX = mX + (mDirX * -mGunOffset), gunOffsetY = mY + (mDirY * -mGunOffset);
 	mGunSprite.RenderSprite(mContext, gunOffsetX, gunOffsetY);
+
+	// Render additional UI
+	FontText* tScore = mResources->StringToFont("Score: " + std::to_string(mScore), Fonts::ARCADE_32, mContext);
+	SDL_RenderCopy(mContext, tScore->mFont, NULL, &(tScore->mSize));
+	delete tScore;
+
+	FontText* tHealth = mResources->StringToFont("Health: " + std::to_string(mHealth), Fonts::ARCADE_32, mContext);
+	tHealth->mSize.y = 32;
+	SDL_RenderCopy(mContext, tHealth->mFont, NULL, &(tHealth->mSize));
+	delete tHealth;
+
+	FontText* tSprint = mResources->StringToFont("Sprint: " + std::to_string((int)((mSprintWait / mSprintAmount) * 100)), Fonts::ARCADE_32, mContext);
+	tSprint->mSize.y = 64;
+	SDL_RenderCopy(mContext, tSprint->mFont, NULL, &(tSprint->mSize));
+	delete tSprint;
+}
+
+int Player::GetScore()
+{
+	return mScore;
+}
+
+void Player::AddScore(int _add)
+{
+	mScore += _add;
 }
 
 Player::Player(SDL_Renderer* _ctx, ResourceManager* _resources, EventManager* _eventManager)
@@ -116,9 +187,12 @@ Player::Player(SDL_Renderer* _ctx, ResourceManager* _resources, EventManager* _e
 	mLegsSprite.SetSpriteYIndex(1);
 	// Set the y-index to 2 so the gun sprite can be used
 	mGunSprite.SetSpriteYIndex(2);
+	// Set health
+	mHealth = 100;
 
-	mX = 700;
-	mY = 240;
+	mX = 640;
+	mY = 360;
+	// Set collidable
 	mCollidable = true;
 }
 

@@ -20,13 +20,17 @@ private:
 	// Gun level
 	int mGunLevel{ 0 };
 	// Gun firerate
-	float mGunFireRate{ 50.f }, mGunWait{ 0 };
+	float mGunFireRate{ 100.f }, mGunWait{ 0 };
 
 // Sprint attributes
 	// Sprint cooldown and amount
-	float mSprintAmount{ 1000.f };
+	float mSprintAmount{ 3000.f };
 	float mSprintWait{ mSprintAmount };
 	bool mSprintCoolDown{ false };
+
+// Score attributes
+	int mScore{ 0 };
+	float mScoreWait{ 1000 };
 
 // External systems
 	// Pointer to event system
@@ -45,6 +49,11 @@ public:
 	// Entity method overrides
 	void Update(double& _deltaTime) override;
 	void Render() override;
+
+	// Let GameManager deal with scoring
+	// Get score
+	int GetScore();
+	void AddScore(int _add);
 
 	// Constructor
 	Player(SDL_Renderer* _ctx, ResourceManager* _resources, EventManager* _eventManager);

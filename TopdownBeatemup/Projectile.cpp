@@ -5,6 +5,21 @@ int Projectile::InflictDamage()
 	return mDamage;
 }
 
+bool Projectile::CheckShooter(GameObject* _self)
+{
+	return (_self == mShooter);
+}
+
+AllObjects Projectile::GetShooter()
+{
+	return GameObjects::ID(mShooter->GetID());
+}
+
+const GameObject* Projectile::AccessShooter()
+{
+	return mShooter;
+}
+
 void Projectile::DestroyOnCollide()
 {
 	// Setting this to false removes it from the CollisionManager

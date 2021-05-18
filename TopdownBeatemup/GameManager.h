@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "Scenes.h"
 #include "EventManager.h"
 #include "CollisionManager.h"
 #include "ResourceManager.h"
@@ -43,22 +44,15 @@ private:
 	// GameObject collision managing system
 	CollisionManager mCollisions;
 
+	// Scene manager
+	std::vector<Scene*> mScenes;
+
 // SDL2 variables
 private:
 	// The application window
 	SDL_Window* mWindow{ nullptr };
 	// The renderer
 	SDL_Renderer* mContext{ nullptr };
-
-// Internal methods
-protected:
-	// Create GameObject
-	// Adds gameobject into the entity pipeline
-	void CreateGameObject(GameObject* _object, bool _isSelfCollidable = false);
-
-	// Create Entity
-	// Adds entity into the entity pipeline
-	void CreateEntity(Entity* _entity);
 
 // Public methods
 public:

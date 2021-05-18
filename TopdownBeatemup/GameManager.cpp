@@ -1,17 +1,5 @@
 #include "GameManager.h"
 
-void GameManager::CreateGameObject(GameObject* _object, bool _isSelfCollidable)
-{
-	mGameObjects.push_back(_object);
-	mEntityList.push_back(_object);
-	mCollisions.AddObject(_object, _isSelfCollidable);
-}
-
-void GameManager::CreateEntity(Entity* _entity)
-{
-	mEntityList.push_back(_entity);
-}
-
 void GameManager::Run()
 {
 	// Check SDL has initialised everything
@@ -24,25 +12,11 @@ void GameManager::Run()
 	// Counter frequency
 	double counterFreq = 1000.0 / SDL_GetPerformanceFrequency();
 
-	SDL_Surface* sPlayer = IMG_Load("Media/FiteCharacterSheet.png");
-	SDL_Surface* sEnemy = IMG_Load("Media/FiteEnemy.png");
-	SDL_Surface* sBullet = IMG_Load("Media/ProjectileBullet.png");
-	SDL_Texture* tPlayer = SDL_CreateTextureFromSurface(mContext, sPlayer);
-	SDL_Texture* tEnemy = SDL_CreateTextureFromSurface(mContext, sEnemy);
-	SDL_Texture* tBullet = SDL_CreateTextureFromSurface(mContext, sBullet);
+	// scenes 0 = menu, 1 = game
+	bool scene = 0;
 
-	SDL_FreeSurface(sPlayer);
-	SDL_FreeSurface(sEnemy);
-	SDL_FreeSurface(sBullet);
-
-	GameObject* player = new Player(mContext, &mResources, &mEvents);
-
-	CreateGameObject(player);
-
-	CreateGameObject(new Enemy(mContext, &mResources, (Player*)player, 300, 300), true);
-	CreateGameObject(new Enemy(mContext, &mResources, (Player*)player, 128, 128), true);
-	CreateGameObject(new Enemy(mContext, &mResources, (Player*)player, 700, 700), true);
-	CreateGameObject(new Enemy(mContext, &mResources, (Player*)player, 500, 200), true);
+	// Load first scene
+	mScenes[scene]->Load();
 
 	while (mGameLoop)
 	{
@@ -82,52 +56,38 @@ void GameManager::Run()
 			}
 		}
 
-		// Create all GameObjects on GameObject creation queues
-		for (size_t it = 0; it < mGameObjects.size(); ++it)
+		// Update scene
+		mScenes[scene]->Update(deltaTime);
+
+		if (mScenes[scene]->Finished())
 		{
-			size_t creationSize = mGameObjects[it]->GetCreationQueueSize();
-			for (size_t c = 0; c < creationSize; ++c)
-			{
-				GameObject* newObject = mGameObjects[it]->AccessCreationQueue(c);
-				CreateGameObject(newObject, mGameObjects[it]->AccessCreationQueueCollisions(c));
-			}
-			mGameObjects[it]->ClearCreationQueue();
+			mScenes[scene]->UnLoad();
+			scene = !scene;
+			mScenes[scene]->Load();
 		}
 
-		// Update every entity
-		for (std::vector<Entity*>::iterator it = mEntityList.begin(); it != mEntityList.end(); ++it)
+		if (mScenes[scene]->Quit())
 		{
-			(*it)->Update(deltaTime);
+			mGameLoop = false;
 		}
-
-		// Update the collision manager object listing
-		mCollisions.UpdateCollisionList();
-
-		// Clear the renderer
-		SDL_SetRenderDrawColor(mContext, 0, 0, 0, 255);
-		SDL_RenderClear(mContext);
-	
-		// Render every entity
-		for (std::vector<Entity*>::iterator it = mEntityList.begin(); it != mEntityList.end(); ++it)
-		{
-			(*it)->Render();
-		}
-
-		// Present buffer 
-		SDL_RenderPresent(mContext);
 	}
-
-	SDL_DestroyTexture(tPlayer);
-	SDL_DestroyTexture(tEnemy);
-	SDL_DestroyTexture(tBullet);
 }
 
 GameManager::GameManager()
 {
+	// Create window and render context
 	mWindow = SDL_CreateWindow("Fite", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, 0);
 	mContext = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
 
-	mInitialised = (mWindow != nullptr && mContext != nullptr && mResources.Init(mContext));
+	// Create scenes
+	Scenes::Game* sGame = new Scenes::Game(&mCollisions, &mResources, &mEvents, mContext, &mEntityList, &mGameObjects);
+	Scenes::Menu* sMenu = new Scenes::Menu(&mCollisions, &mResources, &mEvents, mContext, &mEntityList, &mGameObjects);
+
+	// Add them to scene manager
+	mScenes.push_back(sMenu);
+	mScenes.push_back(sGame);
+
+	mInitialised = (mWindow != nullptr && mContext != nullptr && mResources.Init(mContext) && sGame != nullptr);
 }
 
 GameManager::~GameManager()
@@ -143,4 +103,10 @@ GameManager::~GameManager()
 	mEntityList.clear();
 	// Clear GameObjects list, since entities deleted all objects from it (just dangling pointers now)
 	mGameObjects.clear();
+	// Free scenes
+	for (std::vector<Scene*>::iterator it = mScenes.begin(); it != mScenes.end(); ++it)
+	{
+		delete (*it);
+	}
+	mScenes.clear();
 }

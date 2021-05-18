@@ -7,7 +7,8 @@ enum class AllObjects
 {
 	PLAYER,
 	ENEMY,
-	PROJECTILE
+	BULLET,
+	PARTICLE
 };
 
 namespace GameObjects

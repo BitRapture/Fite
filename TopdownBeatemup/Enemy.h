@@ -8,8 +8,14 @@ class Enemy : public Character
 {
 // Hidden variables
 private:
-	// Pointer to player
-	Player* mFocus{ nullptr };
+	// Speed
+	float mSpeed{ 0.2f };
+
+	// Death remove
+	float mDeathRemove{ 250.f };
+
+// Attack attributes
+	float mAttackRate{ 100.f }, mAttackWait{ 0 };
 
 
 // Shared methods
@@ -19,7 +25,8 @@ public:
 	void Render() override;
 
 	// Constructor
-	Enemy(SDL_Renderer* _ctx, ResourceManager* _resources, Player* _player, float _startingX, float _startingY);
+	Enemy(SDL_Renderer* _ctx, ResourceManager* _resources, float _startingX, float _startingY, float _goTowardsX, float _goTowardsY,
+	int _startingHealth, float _startingSpeed);
 };
 
 #endif

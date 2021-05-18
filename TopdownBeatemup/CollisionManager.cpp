@@ -53,6 +53,8 @@ void CollisionManager::UpdateCollisionList()
 	}
 }
 
-// TODO make an ID system
-// -> A class that takes a GameObject* and an int
-//		-> Allows for specific collisions so objects of similar type dont collide
+
+void CollisionManager::RemoveCollisions()
+{
+	mObjects.clear();
+}

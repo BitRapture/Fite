@@ -28,6 +28,9 @@ public:
 	// Update method (remove destroyed objects)
 	void UpdateCollisionList();
 
+	// Remove all collisions
+	void RemoveCollisions();
+
 };
 
 #endif

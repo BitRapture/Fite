@@ -5,7 +5,6 @@
 
 class Bullet : public Projectile
 {
-
 // Public methods
 public:
 	// Update entity override
@@ -16,6 +15,20 @@ public:
 
 	// Constructor
 	Bullet(SDL_Renderer* _ctx, ResourceManager* _resources, GameObject* _shooter, float _startingX, float _startingY);
+};
+
+class Particle : public Projectile
+{
+// Public methods
+public:
+	// Update entity override
+	void Update(double& _deltaTime) override;
+
+	// Render entity override
+	void Render() override;
+
+	// Constructor
+	Particle(SDL_Renderer* _ctx, ResourceManager* _resources, GameObject* _shooter, float _startingX, float _startingY, float _dirAngle);
 };
 
 #endif

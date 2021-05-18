@@ -12,7 +12,7 @@ void GameObject::DrawHitboxes()
 	// Set color to yellow
 	SDL_SetRenderDrawColor(mContext, 255, 255, 0, 255);
 	// Draw a box (actually the circle radius, easier to display as a rect though)
-	SDL_Rect test{ mX - mSize, mY - mSize, mSize * 2, mSize * 2 };
+	SDL_Rect test{ (int)(mX - mSize), (int)(mY - mSize), (int)(mSize * 2), (int)(mSize * 2) };
 	// Render hitbox around object
 	SDL_RenderDrawRect(mContext, &test);
 }
